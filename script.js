@@ -1,20 +1,6 @@
 
 
-function initMap() {
-    const defaultLocation = { lat: 24.6580, lng: 25.9077 }; 
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 14,
-      center: defaultLocation,
-    });
-  
-    new google.maps.Marker({
-      position: defaultLocation,
-      map: map,
-      title: "Housing Location",
-    });
-  }
-  
-  window.initMap = initMap;
+
   // Load the Google Maps script dynamically
   const script = document.createElement("script");
   console.log("Google Maps initialized.");
@@ -91,10 +77,33 @@ listingsContainer.id = "listingsContainer";
 let map; // global map
 let markers = []; // store markers
 let infoWindow;
+let listings = [];
+let map;
+let markers = [];
+let infoWindow;
+
+function saveListingsToStorage() {
+  localStorage.setItem("listings", JSON.stringify(listings));
+}
+
+function loadListingsFromStorage() {
+  const stored = localStorage.getItem("listings");
+  if (stored) {
+    listings = JSON.parse(stored);
+    listings.forEach((listing) => {
+      addListingToMap(listing);
+      addListingToPage(listing);
+    });
+  }
+}
 
 function initMap() {
   const gaborone = { lat: -24.6580, lng: 25.9077 };
-  map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), 
+                            window.map = map;
+infoWindow = new google.maps.InfoWindow();
+loadListingsFromStorage();
+{
     zoom: 12,
     center: gaborone,
   });
@@ -173,6 +182,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addListingToMap(newListing);
     addListingToPage(newListing);
+      listings.push(newListing);
+saveListingsToStorage();
+
 
     form.reset();
   });
@@ -212,6 +224,18 @@ function addListingToPage(listing) {
 
   container.appendChild(card);
 }
+const searchInput = document.getElementById("searchInput");
 
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.toLowerCase();
+  const container = document.getElementById("listingsContainer");
+  container.innerHTML = "";
+
+  listings
+    .filter((l) => l.name.toLowerCase().includes(query))
+    .forEach((listing) => {
+      addListingToPage(listing);
+    });
+});
 
   
