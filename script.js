@@ -63,5 +63,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.body.insertBefore(listingsContainer, document.querySelector("footer"));
 });
+function initMap() {
+  const gaborone = { lat: -24.6580, lng: 25.9077 };
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 12,
+    center: gaborone,
+  });
+
+  const listings = [
+    {
+      name: "Tsholofelo Apartments",
+      lat: -24.656,
+      lng: 25.913,
+    },
+    {
+      name: "Phase 2 Housing",
+      lat: -24.654,
+      lng: 25.901,
+    }
+  ];
+
+  listings.forEach(listing => {
+    new google.maps.Marker({
+      position: { lat: listing.lat, lng: listing.lng },
+      map: map,
+      title: listing.name,
+    });
+  });
+}
 
   
