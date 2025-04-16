@@ -37,6 +37,17 @@
       <h3>Made by Students</h3>
       <p>We understand your struggles—we've been there.</p>
     </div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+<script>
+  function initMap() {
+    const gaborone = { lat: -24.6282, lng: 25.9231 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 12,
+      center: gaborone,
+    });
+  }
+</script>
   </section>
 
   <footer>
