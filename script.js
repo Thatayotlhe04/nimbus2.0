@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const listingsContainer = document.createElement("div");
+listingsContainer.id = "listingsContainer";
   listingsContainer.style.display = "flex";
   listingsContainer.style.flexWrap = "wrap";
   listingsContainer.style.justifyContent = "center";
@@ -87,13 +88,18 @@ document.addEventListener("DOMContentLoaded", () => {
   displayListings(listings);
 });
 
-// Google Maps
+let map; // global map
+let markers = []; // store markers
+let infoWindow;
+
 function initMap() {
   const gaborone = { lat: -24.6580, lng: 25.9077 };
-  const map = new google.maps.Map(document.getElementById("map"), {
+  map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
     center: gaborone,
   });
+
+  infoWindow = new google.maps.InfoWindow();
 
   const listings = [
     {
@@ -108,14 +114,41 @@ function initMap() {
     }
   ];
 
-  listings.forEach(listing => {
-    new google.maps.Marker({
+  listings.forEach((listing, index) => {
+    const marker = new google.maps.Marker({
       position: { lat: listing.lat, lng: listing.lng },
       map: map,
       title: listing.name,
     });
+
+    marker.addListener("click", () => {
+      infoWindow.setContent(`<strong>${listing.name}</strong>`);
+      infoWindow.open(map, marker);
+    });
+
+    markers.push({ marker, index });
   });
+
+  connectCardsToMarkers();
 }
+
+function connectCardsToMarkers() {
+  // Wait a bit for cards to load in DOM
+  setTimeout(() => {
+    const cards = document.querySelectorAll("#listingsContainer > div");
+    cards.forEach((card, index) => {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", () => {
+        const { marker } = markers[index];
+        map.setCenter(marker.getPosition());
+        map.setZoom(14);
+        infoWindow.setContent(`<strong>${marker.getTitle()}</strong>`);
+        infoWindow.open(map, marker);
+      });
+    });
+  }, 500);
+}
+
 
 
   
