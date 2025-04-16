@@ -148,7 +148,70 @@ function connectCardsToMarkers() {
     });
   }, 500);
 }
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("listingForm");
 
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("listingName").value;
+    const description = document.getElementById("listingDescription").value;
+    const lat = parseFloat(document.getElementById("listingLat").value);
+    const lng = parseFloat(document.getElementById("listingLng").value);
+
+    if (!name || !description || isNaN(lat) || isNaN(lng)) {
+      alert("Please fill out all fields correctly.");
+      return;
+    }
+
+    const newListing = {
+      name,
+      description,
+      lat,
+      lng,
+    };
+
+    addListingToMap(newListing);
+    addListingToPage(newListing);
+
+    form.reset();
+  });
+});
+
+function addListingToMap(listing) {
+  const marker = new google.maps.Marker({
+    position: { lat: listing.lat, lng: listing.lng },
+    map: map,
+    title: listing.name,
+  });
+
+  marker.addListener("click", () => {
+    infoWindow.setContent(`<strong>${listing.name}</strong><br>${listing.description}`);
+    infoWindow.open(map, marker);
+  });
+
+  markers.push({ marker, index: markers.length });
+}
+
+function addListingToPage(listing) {
+  const container = document.getElementById("listingsContainer");
+
+  const card = document.createElement("div");
+  card.innerHTML = `
+    <h4>${listing.name}</h4>
+    <p>${listing.description}</p>
+  `;
+  card.style.cursor = "pointer";
+  card.addEventListener("click", () => {
+    const marker = markers[markers.length - 1].marker;
+    map.setCenter(marker.getPosition());
+    map.setZoom(14);
+    infoWindow.setContent(`<strong>${marker.getTitle()}</strong><br>${listing.description}`);
+    infoWindow.open(map, marker);
+  });
+
+  container.appendChild(card);
+}
 
 
   
