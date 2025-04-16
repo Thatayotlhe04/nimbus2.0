@@ -126,3 +126,39 @@ body {
 #listingForm button:hover {
   background-color: #1d4ed8;
 }
+.listings-section {
+  padding: 3rem 2rem;
+  background-color: #fff;
+  text-align: center;
+}
+
+#searchInput {
+  padding: 0.75rem;
+  width: 80%;
+  max-width: 400px;
+  margin: 1rem auto 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+#listingsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#listingsContainer div {
+  background-color: #f1f5f9;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 250px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+#listingsContainer div:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
