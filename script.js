@@ -43,26 +43,51 @@ document.addEventListener("DOMContentLoaded", () => {
   listingsContainer.style.flexWrap = "wrap";
   listingsContainer.style.justifyContent = "center";
   listingsContainer.style.margin = "2rem";
-
-  listings.forEach(listing => {
-    const card = document.createElement("div");
-    card.style.border = "1px solid #ccc";
-    card.style.borderRadius = "10px";
-    card.style.margin = "1rem";
-    card.style.padding = "1rem";
-    card.style.width = "300px";
-    card.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
-    card.innerHTML = `
-      <img src="${listing.image}" alt="${listing.name}" style="width: 100%; border-radius: 8px;" />
-      <h3>${listing.name}</h3>
-      <p>📍 ${listing.location}</p>
-      <p>💰 BWP ${listing.price}/month</p>
-    `;
-    listingsContainer.appendChild(card);
-  });
-
   document.body.insertBefore(listingsContainer, document.querySelector("footer"));
+
+  const searchInput = document.getElementById("searchInput");
+  const priceInput = document.getElementById("priceInput");
+
+  function displayListings(filtered) {
+    listingsContainer.innerHTML = "";
+    filtered.forEach(listing => {
+      const card = document.createElement("div");
+      card.style.border = "1px solid #ccc";
+      card.style.borderRadius = "10px";
+      card.style.margin = "1rem";
+      card.style.padding = "1rem";
+      card.style.width = "300px";
+      card.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+      card.innerHTML = `
+        <img src="${listing.image}" alt="${listing.name}" style="width: 100%; border-radius: 8px;" />
+        <h3>${listing.name}</h3>
+        <p>📍 ${listing.location}</p>
+        <p>💰 BWP ${listing.price}/month</p>
+      `;
+      listingsContainer.appendChild(card);
+    });
+  }
+
+  function filterListings() {
+    const location = searchInput.value.toLowerCase();
+    const maxPrice = parseInt(priceInput.value);
+
+    const filtered = listings.filter(listing => {
+      const matchesLocation = listing.location.toLowerCase().includes(location);
+      const matchesPrice = isNaN(maxPrice) || listing.price <= maxPrice;
+      return matchesLocation && matchesPrice;
+    });
+
+    displayListings(filtered);
+  }
+
+  searchInput.addEventListener("input", filterListings);
+  priceInput.addEventListener("input", filterListings);
+
+  displayListings(listings);
 });
+
+// Google Maps
 function initMap() {
   const gaborone = { lat: -24.6580, lng: 25.9077 };
   const map = new google.maps.Map(document.getElementById("map"), {
@@ -91,5 +116,6 @@ function initMap() {
     });
   });
 }
+
 
   
