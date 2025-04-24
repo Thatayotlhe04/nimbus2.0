@@ -1,0 +1,16 @@
+[
+  {
+    "title": "2-Bedroom Apartment Near UB",
+    "price": "BWP 3,000/month",
+    "location": "Gaborone",
+    "image": "images/apartment1.jpg",
+    "description": "Spacious apartment within walking distance to the university."
+  },
+  {
+    "title": "Single Room in Shared House",
+    "price": "BWP 1,500/month",
+    "location": "Gaborone",
+    "image": "images/room1.jpg",
+    "description": "Cozy room in a shared house with friendly roommates."
+  }
+]
