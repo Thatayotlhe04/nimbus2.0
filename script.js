@@ -237,5 +237,23 @@ searchInput.addEventListener("input", () => {
       addListingToPage(listing);
     });
 });
+fetch('listings.json')
+  .then(response => response.json())
+  .then(data => {
+    const listingsContainer = document.getElementById('listings');
+    data.forEach(listing => {
+      const listingElement = document.createElement('div');
+      listingElement.className = 'listing-card';
+      listingElement.innerHTML = `
+        <img src="${listing.image}" alt="${listing.title}">
+        <h3>${listing.title}</h3>
+        <p>${listing.price}</p>
+        <p>${listing.location}</p>
+        <p>${listing.description}</p>
+      `;
+      listingsContainer.appendChild(listingElement);
+    });
+  })
+  .catch(error => console.error('Error fetching listings:', error));
 
   
